@@ -1,6 +1,8 @@
 package list
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Node struct {
 	Data interface{}
@@ -102,4 +104,39 @@ func (ll *LinkedList) insert(pos int, data interface{}) bool {
 
 	ll.Size++
 	return true
+}
+
+func (ll *LinkedList) remove(data interface{}) error {
+
+	if ll.Head == nil {
+		return fmt.Errorf("List is currently empty")
+	}
+
+	if ll.Head.Data == data {
+		ll.Head = ll.Head.Next
+
+		if ll.Size == 1 {
+			ll.Tail = nil
+		}
+		ll.Size--
+		return nil
+	}
+
+	current := ll.Head
+
+	for current.Next != nil {
+		if current.Next.Data == data {
+			current.Next = current.Next.Next
+
+			if current.Next == nil {
+				ll.Tail = current
+			}
+
+			ll.Size--
+			return nil
+		}
+		current = current.Next
+	}
+
+	return fmt.Errorf("Value not found")
 }
