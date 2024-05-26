@@ -1,3 +1,4 @@
+// Package queue provides a generic implementation of a queue using an array (slice) in Go.
 package queue
 
 import (
@@ -6,13 +7,16 @@ import (
 	"strings"
 )
 
+// QueueArr represents a queue using an array (slice).
+// It supports basic queue operations such as Enqueue, Dequeue, Peek, IsEmpty, and Length.
 type QueueArr[T any] struct {
-	elements []T
-	Size     int
-	Front    int
-	Back     int
+	elements []T // elements stores the queue items.
+	Size     int // Size is the current number of elements in the queue.
+	Front    int // Front is the index of the front element.
+	Back     int // Back is the index of the back element.
 }
 
+// NewQueue creates and returns a new QueueArr.
 func NewQueue[T any]() *QueueArr[T] {
 	return &QueueArr[T]{
 		elements: make([]T, 10),
@@ -22,10 +26,13 @@ func NewQueue[T any]() *QueueArr[T] {
 	}
 }
 
+// IsEmpty checks if the queue is empty.
+// It returns true if the queue is empty, otherwise false.
 func (q *QueueArr[T]) IsEmpty() bool {
 	return q.Size == 0
 }
 
+// Resize increases the capacity of the queue.
 func (q *QueueArr[T]) Resize() {
 	newCapacity := len(q.elements) * 2
 
@@ -44,6 +51,7 @@ func (q *QueueArr[T]) Resize() {
 	q.Back = q.Size
 }
 
+// Enqueue adds a new element to the back of the queue.
 func (q *QueueArr[T]) Enqueue(data T) {
 	if q.Size == len(q.elements) {
 		q.Resize()
@@ -54,8 +62,9 @@ func (q *QueueArr[T]) Enqueue(data T) {
 	q.Size++
 }
 
+// Dequeue removes and returns the front element of the queue.
+// It returns an error if the queue is empty.
 func (q *QueueArr[T]) Dequeue() (T, error) {
-
 	var zeroValue T
 
 	if q.IsEmpty() {
@@ -69,21 +78,25 @@ func (q *QueueArr[T]) Dequeue() (T, error) {
 	return first, nil
 }
 
+// Length returns the number of elements in the queue.
 func (q *QueueArr[T]) Length() int {
 	return q.Size
 }
 
+// Peek returns the front element of the queue without removing it.
+// It returns an error if the queue is empty.
 func (q *QueueArr[T]) Peek() (T, error) {
 	var zeroValue T
 
 	if q.IsEmpty() {
-		return zeroValue, nil
+		return zeroValue, errors.New("Queue is empty")
 	}
 
 	first := q.elements[q.Front]
 	return first, nil
 }
 
+// String returns a string representation of the queue.
 func (q *QueueArr[T]) String() string {
 	var builder strings.Builder
 	builder.WriteString("[")
