@@ -1,3 +1,4 @@
+// Package deque provides a generic implementation of a double-ended queue (deque) using a doubly-linked list.
 package deque
 
 import (
@@ -6,30 +7,36 @@ import (
 	"strings"
 )
 
+// Node represents a node in the doubly-linked list.
 type Node[T any] struct {
 	Data T
 	Prev *Node[T]
 	Next *Node[T]
 }
 
+// DequeLL represents a deque implemented as a doubly-linked list.
 type DequeLL[T any] struct {
 	Front *Node[T]
 	Back  *Node[T]
 	Size  int
 }
 
+// NewDeque creates a new deque and returns a pointer to it.
 func NewDeque[T any]() *DequeLL[T] {
 	return &DequeLL[T]{}
 }
 
+// IsEmpty checks if the deque is empty.
 func (d *DequeLL[T]) IsEmpty() bool {
 	return d.Size == 0
 }
 
+// Length returns the number of elements in the deque.
 func (d *DequeLL[T]) Length() int {
 	return d.Size
 }
 
+// AddFront adds an element to the front of the deque.
 func (d *DequeLL[T]) AddFront(data T) {
 	node := &Node[T]{Data: data}
 	node.Next = d.Front
@@ -44,6 +51,7 @@ func (d *DequeLL[T]) AddFront(data T) {
 	d.Size++
 }
 
+// AddBack adds an element to the back of the deque.
 func (d *DequeLL[T]) AddBack(data T) {
 	node := &Node[T]{Data: data}
 
@@ -59,6 +67,7 @@ func (d *DequeLL[T]) AddBack(data T) {
 	d.Size++
 }
 
+// PeekFront returns the element at the front of the deque without removing it.
 func (d *DequeLL[T]) PeekFront() (T, error) {
 	var zeroValue T
 	if d.IsEmpty() {
@@ -68,6 +77,7 @@ func (d *DequeLL[T]) PeekFront() (T, error) {
 	return d.Front.Data, nil
 }
 
+// PeekLast returns the element at the back of the deque without removing it.
 func (d *DequeLL[T]) PeekLast() (T, error) {
 	var zeroValue T
 
@@ -78,6 +88,7 @@ func (d *DequeLL[T]) PeekLast() (T, error) {
 	return d.Back.Data, nil
 }
 
+// RemoveFront removes and returns the element at the front of the deque.
 func (d *DequeLL[T]) RemoveFront() (T, error) {
 
 	var zeroValue T
@@ -100,6 +111,7 @@ func (d *DequeLL[T]) RemoveFront() (T, error) {
 	return frontNode.Data, nil
 }
 
+// RemoveBack removes and returns the element at the back of the deque.
 func (d *DequeLL[T]) RemoveBack() (T, error) {
 
 	var zeroValue T
@@ -121,6 +133,7 @@ func (d *DequeLL[T]) RemoveBack() (T, error) {
 	return backNode.Data, nil
 }
 
+// String returns a string representation of the deque.
 func (d *DequeLL[T]) String() string {
 	var builder strings.Builder
 
